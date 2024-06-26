@@ -1,0 +1,140 @@
+.app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f8f9fa;
+  font-family: Arial, sans-serif;
+}
+
+.upload-container {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 400px;
+}
+
+.tab-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  background: #f0f0f0;
+  color: #000;
+  font-weight: bold;
+}
+
+.tab-buttons {
+  display: flex;
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  background: #f0f0f0;
+  color: #000;
+  font-weight: bold;
+}
+
+.tab.active {
+  background: #000;
+  color: #fff;
+}
+
+.email-container {
+  padding: 10px;
+  margin-bottom: 10px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.settings-icon {
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.upload-area {
+  border: 2px dashed #ccc;
+  border-radius: 10px;
+  text-align: center;
+  padding: 20px;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.upload-placeholder {
+  color: #888;
+}
+
+.file-input {
+  display: none;
+}
+
+.email-input {
+  display: block;
+  width: 100%;
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.upload-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 16px;
+}
+
+.upload-button:hover {
+  background-color: #0056b3;
+}
+
+.progress-bar-container {
+  background-color: #ccc;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+.progress-bar {
+  background-color: #4caf50;
+  color: white;
+  text-align: center;
+  padding: 5px 0;
+}
+
+.message {
+  margin-top: 20px;
+  color: #555;
+  text-align: center;
+}
+
+.email{
+  padding: 5px 10px;
+  background: #f0f0f0;
+  border-radius: 30px;
+  color: #555;
+
+}
+.remove-email:hover {
+  cursor: pointer;
+  color: #000;
+
+}
