@@ -2,7 +2,7 @@ import React, { useState, useEffect, ChangeEvent, KeyboardEvent, FocusEvent } fr
 import axios from 'axios';
 import './Home.css';
 
-const MAX_FILES_PER_BATCH = 1500;  // Ajustez ce nombre en fonction de vos besoins
+const MAX_FILES_PER_BATCH = 1500;
 
 const Home: React.FC = () => {
   const [files, setFiles] = useState<{ file: File; relativePath: string }[]>([]);
@@ -14,7 +14,19 @@ const Home: React.FC = () => {
   const [currentBatch, setCurrentBatch] = useState(0);
   const [totalBatches, setTotalBatches] = useState(0);
   const [activeTab, setActiveTab] = useState<'directory' | 'files'>('directory');
-  const [deisabled, setDeisabled] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+  const [activeSettings, setActiveSettings] = useState(false);
+  const [deliveryMethod, setDeliveryMethod] = useState<'email' | 'link'>('email');
+  const [uploadDirUrlMessage, setUploadDirUrlMessage] = useState<string | null>(null);
+  const [tooltipMessage, setTooltipMessage] = useState('Copier ?');
+
+  const handleCopyLink = () => {
+    if (uploadDirUrlMessage) {
+      navigator.clipboard.writeText(uploadDirUrlMessage);
+      setTooltipMessage('Copié');
+      setTimeout(() => setTooltipMessage('Copier ?'), 2000);
+    }
+  };
 
   const validateEmail = (email: string): boolean => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -22,7 +34,7 @@ const Home: React.FC = () => {
   };
 
   const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setDeisabled(true);
+    setDisabled(true);
     const selectedFiles = e.target.files;
     if (selectedFiles) {
       const fileList = [];
@@ -33,7 +45,7 @@ const Home: React.FC = () => {
         });
       }
       setFiles(fileList);
-      setDeisabled(false);
+      setDisabled(false);
     }
   };
 
@@ -69,14 +81,14 @@ const Home: React.FC = () => {
       formData.append('files', file);
     });
     formData.append('paths', paths);
-    formData.append('emailAddresses', emailAddresses.join(','));
+    formData.append("emailAddresses", deliveryMethod === 'link' ? '' : emailAddresses.join(','));
 
     if (uploadDir) {
       formData.append('uploadDir', uploadDir);
     }
 
     try {
-      setDeisabled(true);
+      setDisabled(true);
       const response = await axios.post('http://localhost:3000/api/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -89,6 +101,7 @@ const Home: React.FC = () => {
         }
       });
 
+      setUploadDirUrlMessage(response.data.uploadDirUrl);
       return response.data.uploadDirUrl;
     } catch (error) {
       console.error('Error uploading files:', error);
@@ -106,10 +119,10 @@ const Home: React.FC = () => {
     files.forEach(({ file }) => {
       formData.append('files', file);
     });
-    formData.append('emailAddresses', emailAddresses.join(','));
+    formData.append("emailAddresses", deliveryMethod === 'link' ? '' : emailAddresses.join(','));
 
     try {
-      setDeisabled(true);
+      setDisabled(true);
       const response = await axios.post('http://localhost:3000/api/upload-files', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -123,9 +136,11 @@ const Home: React.FC = () => {
       });
 
       setMessage('Files uploaded successfully');
-      setDeisabled(false);
+      setUploadDirUrlMessage(response.data.uploadDirUrl);
+
+      setDisabled(false);
     } catch (error) {
-      setDeisabled(false);
+      setDisabled(false);
       console.error('Error uploading files:', error);
       setMessage('Error uploading files');
     }
@@ -139,8 +154,10 @@ const Home: React.FC = () => {
     if (activeTab === 'directory') {
       const totalBatches = Math.ceil(files.length / MAX_FILES_PER_BATCH);
       setTotalBatches(totalBatches);
+      setCurrentBatch(1); // Initialize batch processing
     } else {
       await uploadFilesOnly();
+      resetUploadState(); // Reset state after successful upload
     }
   };
 
@@ -162,108 +179,154 @@ const Home: React.FC = () => {
           console.log(error);
           setMessage('Error uploading files');
           setUploadProgress(0);
-          setDeisabled(false);
+          setDisabled(false);
           return;
         }
-      } else if (currentBatch > totalBatches) {
+      } else if (currentBatch > totalBatches && emailAddresses.length > 0) {
         setMessage('Files uploaded successfully');
-        setDeisabled(false);
+        setDisabled(false);
         setUploadProgress(0);
+        resetUploadState(); // Reset state after successful upload
+
+        // Call complete-upload to send email
+        await axios.post('http://localhost:3000/api/upload/complete-upload', {
+          uploadDir,
+          emailAddresses: deliveryMethod === 'email' ? emailAddresses.join(',') : null
+        });
       }
     };
 
     handleUpload();
   }, [currentBatch, totalBatches, files, activeTab]);
 
-  useEffect(() => {
-    if (totalBatches > 0 && currentBatch === 0 && activeTab === 'directory') {
-      setCurrentBatch(1);
-    }
-  }, [totalBatches, activeTab]);
-
   const removeEmail = (index: number) => {
     setEmailAddresses(emailAddresses.filter((_, i) => i !== index));
   };
 
+  const handleDeliveryMethodChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setDeliveryMethod(e.target.value as 'email' | 'link');
+  };
+
+  const resetUploadState = () => {
+    setFiles([]);
+    setEmailAddresses([]);
+    setUploadDir(null);
+    setUploadProgress(0);
+    setCurrentBatch(0);
+    setTotalBatches(0);
+  };
+
   return (
     <div className="app">
-      <div className="upload-container">
-        <div className="tab-container">
-          <div className='tab-buttons'>
-            <button
-              disabled={deisabled}
-              className={`tab ${activeTab === 'directory' ? 'active' : ''}`}
-              onClick={() => setActiveTab('directory')}
-            >
-              Directory
-            </button>
-            <button
-              disabled={deisabled}
-              className={`tab ${activeTab === 'files' ? 'active' : ''}`}
-              onClick={() => setActiveTab('files')}
-            >
-              Files
-            </button>
-          </div>
+      <div className='container-wrapper'>
 
-          <div className="settings-icon">&#9881;</div>
-        </div>
-        <div className="upload-area" onClick={() => document.getElementById('file-input')?.click()}>
-          <input
-            id="file-input"
-            key={activeTab}
-            type="file"
-            multiple
-            // @ts-ignore
-            webkitdirectory={activeTab === 'directory' ? 'true' : undefined}
-            onChange={onFileChange}
-            className="file-input"
-          />
-          <div className="upload-placeholder">
-            Click to browse or drag and drop your files
-          </div>
-        </div>
-        <div className='tab-container'>
-          <input
-            type="text"
-            placeholder="Enter email addresses"
-            value={emailInput}
-            onChange={onEmailChange}
-            onKeyPress={handleEmailKeyPress}
-            onBlur={handleEmailBlur}
-            className="email-input"
-            style={{ margin: 0 }}
-          />
-        </div>
-        {
-          emailAddresses.length > 0 && (
-            <div className='email-container'>
-              {emailAddresses.map((email, index) => (
-                <div className='email' key={index}>
-                  <span>{email}</span> &nbsp;
-                  <span className='remove-email' onClick={() => removeEmail(index)}>x</span>
-                </div>
-              ))}
+        <div className={`upload-container ${activeSettings ? 'active' : ''}`}>
+          <div className="tab-container">
+            <div className='tab-buttons'>
+              <button
+                disabled={disabled}
+                className={`tab ${activeTab === 'directory' ? 'active' : ''}`}
+                onClick={() => setActiveTab('directory')}
+              >
+                Directory
+              </button>
+              <button
+                disabled={disabled}
+                className={`tab ${activeTab === 'files' ? 'active' : ''}`}
+                onClick={() => setActiveTab('files')}
+              >
+                Files
+              </button>
             </div>
-          )
-        }
 
-        {files.length > 0 && (
-          <div>{`Selected ${files.length} file${files.length > 1 ? 's' : ''}`}</div>
-        )}
-        <button
-          disabled={deisabled}
-          onClick={onFileUpload} className="upload-button">
-          Transférer
-        </button>
-        {uploadProgress > 0 && (
-          <div className="progress-bar-container">
-            <div className="progress-bar" style={{ width: `${uploadProgress}%` }}>
-              {uploadProgress}%
+            <div onClick={() => setActiveSettings(!activeSettings)} className="settings-icon">&#9881;</div>
+          </div>
+          <div className="upload-area" onClick={() => document.getElementById('file-input')?.click()}>
+            <input
+              id="file-input"
+              key={activeTab}
+              type="file"
+              multiple
+              // @ts-ignore
+              webkitdirectory={activeTab === 'directory' ? 'true' : undefined}
+              onChange={onFileChange}
+              className="file-input"
+            />
+            <div className="upload-placeholder">
+              Click to browse or drag and drop your files
             </div>
           </div>
-        )}
-        <p className="message">{message}</p>
+          {deliveryMethod === 'email' && (
+            <>
+              <div className='tab-container'>
+                <input
+                  type="text"
+                  placeholder="Enter email addresses"
+                  value={emailInput}
+                  onChange={onEmailChange}
+                  onKeyPress={handleEmailKeyPress}
+                  onBlur={handleEmailBlur}
+                  className="email-input"
+                  style={{ margin: 0 }}
+                />
+              </div>
+              {
+                emailAddresses.length > 0 && (
+                  <div className='email-container'>
+                    {emailAddresses.map((email, index) => (
+                      <div className='email' key={index}>
+                        <span>{email}</span> &nbsp;
+                        <span className='remove-email' onClick={() => removeEmail(index)}>x</span>
+                      </div>
+                    ))}
+                  </div>
+                )
+              }
+            </>
+          )}
+
+          {files.length > 0 && (
+            <div>{`Selected ${files.length} file${files.length > 1 ? 's' : ''}`}</div>
+          )}
+          <button
+            disabled={disabled}
+            onClick={onFileUpload} className="upload-button">
+            Transférer
+          </button>
+          {uploadProgress > 0 && (
+            <div className="progress-bar-container">
+              <div className="progress-bar" style={{ width: `${uploadProgress}%` }}>
+                {uploadProgress}%
+              </div>
+            </div>
+          )}
+          <p className="message">{message}</p>
+          {deliveryMethod === 'link' && uploadDirUrlMessage && (
+            <div className="upload-result" onClick={handleCopyLink}>
+              <span>Copy the link:</span>
+              <span>
+                {uploadDirUrlMessage}
+              </span>
+              <span className="tooltip">{tooltipMessage}</span>
+            </div>
+          )}
+        </div>
+        <div className={`setting-container ${activeSettings ? 'active' : ''}`}>
+          <div className="settings-panel">
+            <div>
+              <label style={{ width: "150px" }}>
+                <input type="radio" name="setting" value="email" checked={deliveryMethod === 'email'} onChange={handleDeliveryMethodChange} />
+                Par email
+              </label>
+            </div>
+            <div>
+              <label style={{ width: "150px" }}>
+                <input type="radio" name="setting" value="link" checked={deliveryMethod === 'link'} onChange={handleDeliveryMethodChange} />
+                Par lien à copier
+              </label>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

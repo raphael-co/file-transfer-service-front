@@ -36,3 +36,16 @@
     transform: rotate(360deg);
   }
 }
+
+.App ul {
+  list-style-type: none;
+  padding-left: 20px;
+}
+
+.App li {
+  margin-bottom: 5px;
+}
+
+.App strong {
+  color: #0000FF; /* Bleu pour les répertoires */
+}

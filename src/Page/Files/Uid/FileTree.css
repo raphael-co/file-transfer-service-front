@@ -1,0 +1,118 @@
+.file-tree-container {
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    overflow-x: auto;
+    white-space: nowrap;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+.file-node {
+    margin-left: 20px;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    /* Assure la compatibilité avec tous les navigateurs */
+}
+
+.folder {
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
+    color: #007bff;
+}
+
+.file {
+    margin-left: 20px;
+    font-size: 16px;
+}
+
+.children {
+    margin-left: 20px;
+    border-left: 1px solid #ccc;
+    padding-left: 10px;
+}
+
+@media (max-width: 768px) {
+
+    .file-node,
+    .file,
+    .folder {
+        margin-left: 10px;
+        font-size: 14px;
+        /* Ajustez la taille de la police pour les écrans moyens */
+    }
+}
+
+@media (max-width: 480px) {
+
+    .file-node,
+    .file,
+    .folder {
+        margin-left: 5px;
+        font-size: 12px;
+        /* Ajustez la taille de la police pour les petits écrans */
+    }
+}
+
+
+.app-download {
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+}
+
+.uid-tab-buttons {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0px;
+}
+
+.ui-tab-container-buttons-right {
+    display: flex;
+    flex: 1;
+    gap: 10px;
+    justify-content: start;
+    padding: 15px;
+}
+
+.ui-tab-container-buttons-left {
+    display: flex;
+    flex: 1;
+    gap: 10px;
+    justify-content: end;
+    padding: 15px;
+}
+.uid-tab {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    background: #f0f0f0;
+    color: #000;
+    font-weight: bold;
+}
+
+.uid-tab.active {
+    background: #000;
+    color: #fff;
+    max-width: 100px;
+}
+
+.error-message {
+    color: red;
+    margin-top: 20px;
+    text-align: center;
+    font-weight: bold;
+  }
+  

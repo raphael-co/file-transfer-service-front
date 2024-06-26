@@ -15,6 +15,51 @@
   width: 400px;
 }
 
+.container-wrapper {
+  display: flex;
+  flex-direction: row;
+  padding: 0px 0px;
+}
+
+.upload-container.active {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px 0 0 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  width: 400px;
+}
+
+.setting-container {
+  background: #ffffff;
+  padding: 20px 0px;
+  /* Padding horizontal seulement pour garder la structure */
+  border-radius: 0 10px 10px 0;
+  box-shadow: 0 0px 8px rgba(0, 0, 0, 0.1);
+  width: 0px;
+  overflow: hidden;
+  transition: width 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
+
+}
+
+.setting-container.active {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 0 10px 10px 0;
+  box-shadow: 0 0px 8px rgba(0, 0, 0, 0.1);
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.settings-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  gap: 10px;
+}
+
 .tab-container {
   display: flex;
   justify-content: space-between;
@@ -126,15 +171,105 @@
   text-align: center;
 }
 
-.email{
+.email {
   padding: 5px 10px;
   background: #f0f0f0;
   border-radius: 30px;
   color: #555;
 
 }
+
 .remove-email:hover {
   cursor: pointer;
   color: #000;
 
+}
+
+.upload-result {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.upload-result .tooltip {
+  visibility: hidden;
+  width: 80px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -40px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.upload-result:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+@media (max-width: 640px) {
+
+  .container-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    width: 350px;
+  }
+  .upload-container{
+    width: 100%;
+  }
+
+  .upload-container.active {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px 0 0 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+  }
+
+  .setting-container {
+    background: #ffffff;
+    padding: 0px 20px;
+    /* Padding horizontal seulement pour garder la structure */
+    border-radius: 0 10px 10px 0;
+    box-shadow: 0 0px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 0;
+    overflow: hidden;
+    transition: height 0.3s ease, padding 0.3s ease, box-shadow 0.3s ease;
+
+  }
+
+  .setting-container.active {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 0 10px 10px 0;
+    box-shadow: 0 0px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .settings-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    gap: 10px;
+  }
 }

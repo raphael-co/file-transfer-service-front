@@ -1,15 +1,8 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './Page/Home';
 import Files from './Page/Files';
-
-const About: React.FC = () => {
-  return <h2>About Page</h2>;
-};
-
-const Contact: React.FC = () => {
-  return <h2>Contact Page</h2>;
-};
+import FileUid from './Page/Files/Uid';
 
 const App: React.FC = () => {
   return (
@@ -30,6 +23,7 @@ const App: React.FC = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/files" element={<Files />} />
+        <Route path="/file/:uid" element={<FileUid />} />
       </Routes>
     </Router>
   );
