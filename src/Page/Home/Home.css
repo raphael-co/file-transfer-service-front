@@ -2,9 +2,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   background-color: #f8f9fa;
   font-family: Arial, sans-serif;
+  flex: 1;
 }
 
 .upload-container {
@@ -117,6 +117,7 @@
   padding: 20px;
   margin-bottom: 20px;
   cursor: pointer;
+  width: calc(100% - 40px)
 }
 
 .upload-placeholder {
@@ -156,6 +157,7 @@
   border-radius: 5px;
   overflow: hidden;
   margin-top: 20px;
+  width: 100%;
 }
 
 .progress-bar {
@@ -272,4 +274,46 @@
     width: 100%;
     gap: 10px;
   }
+}
+
+
+.message-error {
+  color: red;
+  margin-top: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+
+.message-success {
+  color: green;
+  margin-top: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.loading-spinner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999; /* Ensure it's on top */
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 6px solid #ccc;
+  border-top: 6px solid #000;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }

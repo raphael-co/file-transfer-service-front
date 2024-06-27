@@ -5,9 +5,12 @@
     width: 100%;
     box-sizing: border-box;
     overflow-x: auto;
+    overflow-y: scroll;
     white-space: nowrap;
     overflow-wrap: break-word;
     word-wrap: break-word;
+    flex: 1;
+    display: flex;
 }
 
 .file-node {
@@ -60,10 +63,11 @@
 
 .app-download {
     display: flex;
-    height: 100vh;
+    height: 100%;
     flex-direction: column;
     background-color: #f8f9fa;
     font-family: Arial, sans-serif;
+    flex: 1;
 }
 
 .uid-tab-buttons {
@@ -92,6 +96,7 @@
     justify-content: end;
     padding: 15px;
 }
+
 .uid-tab {
     flex: 1;
     padding: 10px;
@@ -114,5 +119,111 @@
     margin-top: 20px;
     text-align: center;
     font-weight: bold;
-  }
-  
+}
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.progress-container {
+    width: 80%;
+    background-color: #f3f3f3;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.progress-bar {
+    height: 30px;
+    background-color: #4caf50;
+    text-align: center;
+    line-height: 30px;
+    color: white;
+    transition: width 0.4s ease;
+}
+
+
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #000;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.search-bar {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding: 15px;
+}
+
+.search-bar input[type="text"] {
+    width: 100%;
+    max-width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    font-size: 16px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.search-bar input[type="text"]:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.scroll-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    transition: opacity 0.4s;
+}
+
+.scroll-to-top:hover {
+    background-color: #0056b3;
+}
+
+.scroll-to-top:active {
+    background-color: #004085;
+}
