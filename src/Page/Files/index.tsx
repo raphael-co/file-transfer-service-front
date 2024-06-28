@@ -39,7 +39,7 @@ const Files: React.FC = () => {
     useEffect(() => {
         const fetchStats = async () => {
             try {
-                const uploadsResponse = await axios.get('http://localhost:3000/api/stats/uploads');
+                const uploadsResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/stats/uploads`);
                 setUploadStats(uploadsResponse.data);
             } catch (error) {
                 console.error('Error fetching upload stats:', error);
@@ -49,7 +49,7 @@ const Files: React.FC = () => {
             }
 
             try {
-                const downloadsResponse = await axios.get('http://localhost:3000/api/stats/downloads');
+                const downloadsResponse = await axios.get(`${process.env.REACT_APP_API_URL}/api/stats/downloads`);
                 setDownloadStats(downloadsResponse.data);
             } catch (error) {
                 console.error('Error fetching download stats:', error);

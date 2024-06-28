@@ -41,7 +41,7 @@ const FileTree: React.FC = () => {
 
     useEffect(() => {
         if (uid) {
-            axios.get(`http://localhost:3000/api/files/${uid}`)
+            axios.get(`${process.env.REACT_APP_API_URL}/api/files/${uid}`)
                 .then(response => {
                     setData(response.data.files);
                     setTotalSize(response.data.totalSize);
@@ -178,7 +178,7 @@ const FileTree: React.FC = () => {
         setDownloadProgress(0); // Réinitialisez la progression à 0
         try {
             const xhr = new XMLHttpRequest();
-            xhr.open('GET', `http://localhost:3000/api/files/download/${uid}`, true);
+            xhr.open('GET', `${process.env.REACT_APP_API_URL}/api/files/download/${uid}`, true);
             xhr.responseType = 'blob';
 
             xhr.onprogress = (event) => {

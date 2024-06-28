@@ -80,7 +80,7 @@ const Home: React.FC = () => {
     try {
       setDisabled(true);
       setLoading(true); // Enable loading
-      const response = await axios.post('http://localhost:3000/api/upload', formData, {
+      const response = await axios.post('http://ost:3000/api/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -119,7 +119,7 @@ const Home: React.FC = () => {
     try {
       setDisabled(true);
       setLoading(true); // Enable loading
-      const response = await axios.post('http://localhost:3000/api/upload/upload-files', formData, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/upload/upload-files`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -139,7 +139,7 @@ const Home: React.FC = () => {
       const parts = response.data.uploadDirUrl.split('/');
       if (deliveryMethod === 'email') {
         console.log(uploadDir);
-        await axios.post('http://localhost:3000/api/upload/complete-upload', {
+        await axios.post(`${process.env.REACT_APP_API_URL}/api/upload/complete-upload`, {
           uploadDir: parts[parts.length - 1],
           emailAddresses: emailAddresses.join(','),
         });
@@ -215,7 +215,7 @@ const Home: React.FC = () => {
         if (deliveryMethod === 'email') {
           console.log(uploadDir);
 
-          await axios.post('http://localhost:3000/api/upload/complete-upload', {
+          await axios.post(`${process.env.REACT_APP_API_URL}/api/upload/complete-upload`, {
             uploadDir,
             emailAddresses: emailAddresses.join(','),
           });
@@ -406,13 +406,13 @@ const Home: React.FC = () => {
         </div>
         <div className={`setting-container ${activeSettings ? 'active' : ''}`}>
           <div className="settings-panel">
-            <div>
+            <div style={{minWidth : '250px'}}>
               <label style={{ width: '150px' }}>
                 <input type="radio" name="setting" value="email" checked={deliveryMethod === 'email'} onChange={handleDeliveryMethodChange} />
                 Par email
               </label>
             </div>
-            <div>
+            <div style={{minWidth : '250px'}}>
               <label style={{ width: '150px' }}>
                 <input type="radio" name="setting" value="link" checked={deliveryMethod === 'link'} onChange={handleDeliveryMethodChange} />
                 Par lien à copier

@@ -5,6 +5,7 @@ import Files from './Page/Files';
 import FileUid from './Page/Files/Uid';
 import logo from './FILEEXPRESSLOGO.png';
 import "./App.css";
+import NotFound from './Page/NotFound';
 const App: React.FC = () => {
   return (
     <Router>
@@ -25,6 +26,7 @@ const App: React.FC = () => {
         <Route path="/" element={<Home />} />
         <Route path="/file" element={<Files />} />
         <Route path="/file/:uid" element={<FileUid />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
