@@ -171,6 +171,7 @@ const FileTree: React.FC = () => {
             const newState = { ...prevState, [path]: !prevState[path] };
             return newState;
         });
+        setLoading(false);
     };
 
     const handleDownload = async () => {

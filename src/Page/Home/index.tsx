@@ -80,7 +80,7 @@ const Home: React.FC = () => {
     try {
       setDisabled(true);
       setLoading(true); // Enable loading
-      const response = await axios.post('http://ost:3000/api/upload', formData, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
