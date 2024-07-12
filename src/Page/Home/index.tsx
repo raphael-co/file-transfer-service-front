@@ -2,7 +2,7 @@ import React, { useState, useEffect, ChangeEvent, KeyboardEvent, FocusEvent, use
 import axios from 'axios';
 import './Home.css';
 
-const MAX_FILES_PER_BATCH = 1500;
+const MAX_FILES_PER_BATCH = 1000;
 
 const Home: React.FC = () => {
   const [files, setFiles] = useState<{ file: File; relativePath: string }[]>([]);
