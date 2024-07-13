@@ -80,7 +80,7 @@ const Home: React.FC = () => {
     try {
       setDisabled(true);
       setLoading(true); // Enable loading
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/upload`, formData, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -119,7 +119,7 @@ const Home: React.FC = () => {
     try {
       setDisabled(true);
       setLoading(true); // Enable loading
-      const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/upload/upload-files`, formData, {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/upload/upload-files`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -139,7 +139,7 @@ const Home: React.FC = () => {
       const parts = response.data.uploadDirUrl.split('/');
       if (deliveryMethod === 'email') {
         console.log(uploadDir);
-        await axios.post(`${process.env.REACT_APP_API_URL}/api/upload/complete-upload`, {
+        await axios.post(`${process.env.REACT_APP_API_URL}/upload/complete-upload`, {
           uploadDir: parts[parts.length - 1],
           emailAddresses: emailAddresses.join(','),
         });
@@ -215,7 +215,7 @@ const Home: React.FC = () => {
         if (deliveryMethod === 'email') {
           console.log(uploadDir);
 
-          await axios.post(`${process.env.REACT_APP_API_URL}/api/upload/complete-upload`, {
+          await axios.post(`${process.env.REACT_APP_API_URL}/upload/complete-upload`, {
             uploadDir,
             emailAddresses: emailAddresses.join(','),
           });
